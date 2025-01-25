@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Scene with Lighting</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    input {
+      margin: 10px;
+      padding: 5px;
+      font-size: 16px;
+    }
+    label {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Input Fields -->
+  <div>
+    <label for="block-number">Block Number:</label>
+    <input type="number" id="block-number" value="12345">
+  </div>
+  <div>
+    <label for="ins">Instructions:</label>
+    <input type="text" id="ins" value="420">
+  </div>
+
+  <!-- Scene Setup -->
+  <m-light type="point" intensity="450" x="10" y="10" z="10"></m-light>
+  <m-light type="point" intensity="450" x="-10" y="10" z="10"></m-light>
+  <m-light type="point" intensity="450" x="20" y="20" z="-20"></m-light>
+
+  <!-- Shapes -->
+<m-cube id="cube1" x="5" y="5" z="0" width="1" height="1" depth="1" color="#00FF00"></m-cube> <!-- Green cube -->
+<m-cube id="cube2" x="6" y="5" z="0" width="1" height="1" depth="1" color="#0000FF"></m-cube> <!-- Blue cube -->
+<m-cube id="special-cube" x="7" y="5" z="0" width="1" height="1" depth="1" color="#FFD700" visible="true"></m-cube> <!-- Gold cube -->
+
+  <script>
+    // Define color mappings
+    const colorMap = {
+      0: "#FF0000", // Red
+      1: "#00FF00", // Green
+      2: "#0000FF", // Blue
+      3: "#FFFF00", // Yellow
+      4: "#FF00FF", // Magenta
+      5: "#00FFFF", // Cyan
+      6: "#FFFFFF", // White
+      7: "#FFA500", // Orange
+      8: "#A52A2A", // Brown
+      9: "#808080"  // Grey
+    };
+
+    // Function to update the scene
+    function updateScene() {
+      const blockNumberInput = document.getElementById("block-number");
+      const insInput = document.getElementById("ins");
+
+      const blockNumber = blockNumberInput.value.padStart(2, "0"); // Ensure at least 2 digits
+      const digits = blockNumber.split("").map(Number);
+
+      // Update colors based on block number
+      document.getElementById("cube1").setAttribute("color", colorMap[digits[0]]);
+      document.getElementById("cube2").setAttribute("color", colorMap[digits[1]]);
+
+      // Update visibility based on `ins` value
+      const specialCube = document.getElementById("special-cube");
+      if (insInput.value.includes("420")) {
+        specialCube.setAttribute("visible", "true");
+      } else {
+        specialCube.setAttribute("visible", "false");
+      }
+    }
+
+    // Add event listeners to inputs
+    document.getElementById("block-number").addEventListener("input", updateScene);
+    document.getElementById("ins").addEventListener("input", updateScene);
+
+    // Initial update
+    updateScene();
+  </script>
+</body>
+</html>
